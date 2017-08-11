@@ -1,14 +1,27 @@
 package sections;
 
-import org.osbot.rs07.api.map.Area;
+import org.osbot.rs07.api.filter.NameFilter;
+import org.osbot.rs07.api.filter.PositionFilter;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.Entity;
+import org.osbot.rs07.api.model.GroundDecoration;
 import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.api.ui.Tab;
+import org.osbot.rs07.event.WalkingEvent;
 import utils.Sleep;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+
 public final class SurvivalSection extends TutorialSection {
+
+    private final List<Position> PATH_TO_GATE = Arrays.asList(
+            new Position(3098, 3092, 0),
+            new Position(3092, 3091, 0)
+    );
 
     public SurvivalSection() {
         super("Survival Expert");
@@ -58,7 +71,14 @@ public final class SurvivalSection extends TutorialSection {
                 }
                 break;
             case 120:
-                getWalking().webWalk(new Area(3073, 3083, 3078, 3086));
+                RS2Object gate = getObjects().closest("Gate");
+                if (gate != null) {
+                    if (gate.interact("Open")){
+                        Sleep.sleepUntil(() -> getProgress() == 130, 5000);
+                    }
+                } else {
+                    getWalking().walkPath(PATH_TO_GATE);
+                }
                 break;
         }
     }
@@ -79,12 +99,38 @@ public final class SurvivalSection extends TutorialSection {
     }
 
     private void lightFire() {
-        if (!"Tinderbox".equals(getInventory().getSelectedItemName())) {
+        if (standingOnFire()) {
+            getEmptyPosition().ifPresent(position -> {
+                WalkingEvent walkingEvent = new WalkingEvent(position);
+                walkingEvent.setMinDistanceThreshold(0);
+                execute(walkingEvent);
+            });
+        } else if (!"Tinderbox".equals(getInventory().getSelectedItemName())) {
             getInventory().getItem("Tinderbox").interact("Use");
         } else if (getInventory().getItem("Logs").interact()) {
             Position playerPos = myPosition();
             Sleep.sleepUntil(() -> !myPosition().equals(playerPos), 10_000);
         }
+    }
+
+    private boolean standingOnFire() {
+        return getObjects().singleFilter(getObjects().getAll(), obj -> obj.getPosition().equals(myPosition()) && obj.getName().equals("Fire")) != null;
+    }
+
+    private Optional<Position> getEmptyPosition() {
+        List<Position> allPositions = myPlayer().getArea(10).getPositions();
+
+        // Remove any position with an object (except ground decorations, as they can be walked on)
+        for(RS2Object object : getObjects().getAll()){
+            if (object instanceof GroundDecoration) {
+                continue;
+            }
+            allPositions.removeIf(position -> object.getPosition().equals(position));
+        }
+
+        allPositions.removeIf(position -> !getMap().canReach(position));
+
+        return allPositions.stream().min(Comparator.comparingInt(p -> myPosition().distance(p)));
     }
 
     private void cook() {

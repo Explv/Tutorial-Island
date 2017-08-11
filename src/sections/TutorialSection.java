@@ -1,5 +1,6 @@
 package sections;
 
+import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.script.MethodProvider;
 import utils.Sleep;
@@ -20,14 +21,14 @@ public abstract class TutorialSection extends MethodProvider {
         return getConfigs().get(281);
     }
 
-    protected boolean isInstructorVisible() {
-        return getNpcs().closest(INSTRUCTOR_NAME) != null;
-    }
-
     protected final void talkToInstructor() {
-        if (getNpcs().closest(INSTRUCTOR_NAME).interact("Talk-to")) {
+        if (getInstructor().interact("Talk-to")) {
             Sleep.sleepUntil(this::pendingContinue, 5000);
         }
+    }
+
+    protected NPC getInstructor() {
+        return getNpcs().closest(INSTRUCTOR_NAME);
     }
 
     protected boolean pendingContinue() {

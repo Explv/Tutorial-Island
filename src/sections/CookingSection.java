@@ -2,12 +2,21 @@ package sections;
 
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
+import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.api.ui.Tab;
 import utils.Sleep;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class CookingSection extends TutorialSection {
 
     private static final Area COOK_BUILDING = new Area(3073, 3083, 3078, 3086);
+    private static final List<Position> PATH_TO_COOK_BUILDING = Arrays.asList(
+            new Position(3087, 3091, 0),
+            new Position(3083, 3086, 0),
+            new Position(3080, 3083, 0)
+    );
 
     public CookingSection() {
         super("Master Chef");
@@ -21,7 +30,11 @@ public class CookingSection extends TutorialSection {
         }
         switch (getProgress()) {
             case 130:
-                getWalking().webWalk(COOK_BUILDING);
+                if (getWalking().walkPath(PATH_TO_COOK_BUILDING)) {
+                    if (getDoorHandler().handleNextObstacle(COOK_BUILDING)) {
+                        Sleep.sleepUntil(() -> getProgress() == 140, 5000);
+                    }
+                }
                 break;
             case 140:
                 talkToInstructor();
@@ -36,7 +49,9 @@ public class CookingSection extends TutorialSection {
                 getTabs().open(Tab.MUSIC);
                 break;
             case 180:
-                getWalking().webWalk(new Position(3071, 3090, 0));
+                if (getDoorHandler().handleNextObstacle(new Position(3071, 3090, 0))) {
+                    Sleep.sleepUntil(() -> getProgress() != 180, 5000);
+                }
                 break;
         }
     }

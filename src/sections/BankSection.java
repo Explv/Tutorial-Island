@@ -7,6 +7,9 @@ import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.RS2Object;
 import utils.Sleep;
 
+import java.util.Arrays;
+import java.util.List;
+
 public final class BankSection extends TutorialSection {
 
     private static final Area BANK_AREA = new Area(
@@ -35,6 +38,13 @@ public final class BankSection extends TutorialSection {
             }
     );
 
+    private static final List<Position> PATH_TO_BANK = Arrays.asList(
+            new Position(3111, 3123, 0),
+            new Position(3114, 3119, 0),
+            new Position(3118, 3116, 0),
+            new Position(3121, 3118, 0)
+    );
+
     public BankSection() {
         super("Financial Advisor");
     }
@@ -49,7 +59,9 @@ public final class BankSection extends TutorialSection {
         switch (getProgress()) {
             case 510:
                 if (!BANK_AREA.contains(myPosition())) {
-                    getWalking().webWalk(BANK_AREA);
+                    if (getWalking().walkPath(PATH_TO_BANK)) {
+                         getDoorHandler().handleNextObstacle(BANK_AREA);
+                    }
                 } else if (getDialogues().isPendingOption()) {
                     getDialogues().selectOption("Yes.");
                 } else if (getObjects().closest("Bank booth").interact("Use")) {

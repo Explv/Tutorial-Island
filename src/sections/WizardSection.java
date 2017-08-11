@@ -1,11 +1,15 @@
 package sections;
 
 import org.osbot.rs07.api.map.Area;
+import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.ui.Spells;
 import org.osbot.rs07.api.ui.Tab;
 import org.osbot.rs07.event.WalkingEvent;
 import utils.Sleep;
+
+import java.util.Arrays;
+import java.util.List;
 
 public final class WizardSection extends TutorialSection {
 
@@ -23,6 +27,15 @@ public final class WizardSection extends TutorialSection {
             {3139, 3084}, {3141, 3084}
     });
 
+    private static final List<Position> PATH_TO_WIZARD_BUILDING = Arrays.asList(
+            new Position(3122, 3101, 0),
+            new Position(3125, 3097, 0),
+            new Position(3127, 3093, 0),
+            new Position(3129, 3088, 0),
+            new Position(3135, 3087, 0),
+            new Position(3141, 3086, 0)
+    );
+
     private static final Area CHICKEN_AREA = new Area(3139, 3091, 3140, 3090);
 
     public WizardSection() {
@@ -36,8 +49,9 @@ public final class WizardSection extends TutorialSection {
             return;
         }
 
-        if (!WIZARD_BUILDING.contains(myPosition())) {
-            getWalking().webWalk(WIZARD_BUILDING);
+        if (getInstructor() == null) {
+            Sleep.sleepUntil(() -> myPlayer().isAnimating(), 5000);
+            getWalking().walkPath(PATH_TO_WIZARD_BUILDING);
         }
 
         switch (getProgress()) {

@@ -2,6 +2,7 @@ package utils;
 
 import org.osbot.rs07.utility.ConditionalSleep;
 
+import java.net.URLEncoder;
 import java.util.function.BooleanSupplier;
 
 public final class Sleep extends ConditionalSleep {
@@ -19,7 +20,7 @@ public final class Sleep extends ConditionalSleep {
     }
 
     @Override
-    public boolean condition() throws InterruptedException {
+    public final boolean condition() throws InterruptedException {
         return condition.getAsBoolean();
     }
 

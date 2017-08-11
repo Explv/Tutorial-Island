@@ -1,18 +1,32 @@
 package sections;
 
 import org.osbot.rs07.api.map.Area;
+import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.Tab;
 import utils.CachedWidget;
 import utils.Sleep;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 
 public final class QuestSection extends TutorialSection {
 
     private static final Area QUEST_BUILDING = new Area(3083, 3119, 3089, 3125);
+
+    private static final List<Position> PATH_TO_QUEST_BUILDING = Arrays.asList(
+            new Position(3071, 3090, 0),
+            new Position(3071, 3094, 0),
+            new Position(3071, 3099, 0),
+            new Position(3072, 3103, 0),
+            new Position(3074, 3108, 0),
+            new Position(3076, 3111, 0),
+            new Position(3077, 3115, 0),
+            new Position(3076, 3118, 0),
+            new Position(3076, 3122, 0),
+            new Position(3079, 3125, 0),
+            new Position(3083, 3127, 0),
+            new Position(3086, 3126, 0)
+    );
 
     public QuestSection() {
         super("Quest Guide");
@@ -41,7 +55,11 @@ public final class QuestSection extends TutorialSection {
                 getSettings().setRunning(true);
                 break;
             case 210:
-                getWalking().webWalk(QUEST_BUILDING);
+                if (getWalking().walkPath(PATH_TO_QUEST_BUILDING)) {
+                    if (getDoorHandler().handleNextObstacle(QUEST_BUILDING)) {
+                        Sleep.sleepUntil(() -> getProgress() != 210, 5000);
+                    }
+                }
                 break;
             case 220:
                 talkToInstructor();
