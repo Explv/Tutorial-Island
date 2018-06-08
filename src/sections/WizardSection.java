@@ -73,7 +73,7 @@ public final class WizardSection extends TutorialSection {
                 break;
             case 670:
                 if (getDialogues().isPendingOption()) {
-                    getDialogues().selectOption("Yes.", "I'm fine, thanks.");
+                    getDialogues().selectOption("Yes.", "No, I'm not planning to do that.");
                 } else {
                     talkToInstructor();
                 }
