@@ -23,7 +23,7 @@ public abstract class TutorialSection extends MethodProvider {
 
     protected final void talkToInstructor() {
         if (getInstructor().interact("Talk-to")) {
-            Sleep.sleepUntil(this::pendingContinue, 5000);
+            Sleep.sleepUntil(this::pendingContinue, 5000,500);
         }
     }
 
@@ -43,10 +43,10 @@ public abstract class TutorialSection extends MethodProvider {
         }
         if (continueWidget.getMessage().contains("Click here to continue")) {
             getKeyboard().pressKey(KeyEvent.VK_SPACE);
-            Sleep.sleepUntil(() -> !continueWidget.isVisible(), 1000);
+            Sleep.sleepUntil(() -> !continueWidget.isVisible(), 1000,500);
             return true;
         } else if (continueWidget.interact()) {
-            Sleep.sleepUntil(() -> !continueWidget.isVisible(), 1000);
+            Sleep.sleepUntil(() -> !continueWidget.isVisible(), 1000,500);
             return true;
         }
         return false;

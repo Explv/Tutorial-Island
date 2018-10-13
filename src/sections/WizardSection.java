@@ -50,7 +50,7 @@ public final class WizardSection extends TutorialSection {
         }
 
         if (getInstructor() == null) {
-            Sleep.sleepUntil(() -> myPlayer().isAnimating(), 5000);
+            Sleep.sleepUntil(() -> myPlayer().isAnimating(), 5000,500);
             getWalking().walkPath(PATH_TO_WIZARD_BUILDING);
         }
 
@@ -73,7 +73,9 @@ public final class WizardSection extends TutorialSection {
                 break;
             case 670:
                 if (getDialogues().isPendingOption()) {
-                    getDialogues().selectOption("Yes.", "No, I'm not planning to do that.");
+                    getDialogues().selectOption("No, I'm not planning to do that.", "Yes.", "I'm fine, thanks.");
+                } else if (getMagic().isSpellSelected()) {
+                    getMagic().deselectSpell();
                 } else {
                     talkToInstructor();
                 }
@@ -84,7 +86,7 @@ public final class WizardSection extends TutorialSection {
     private boolean walkToChickenArea() {
         WalkingEvent walkingEvent = new WalkingEvent(CHICKEN_AREA);
         walkingEvent.setMinDistanceThreshold(0);
-        walkingEvent.setMinDistanceThreshold(0);
+        walkingEvent.setMiniMapDistanceThreshold(0);
         execute(walkingEvent);
         return walkingEvent.hasFinished();
     }
@@ -92,7 +94,7 @@ public final class WizardSection extends TutorialSection {
     private boolean attackChicken() {
         NPC chicken = getNpcs().closest("Chicken");
         if (chicken != null && getMagic().castSpellOnEntity(Spells.NormalSpells.WIND_STRIKE, chicken)) {
-            Sleep.sleepUntil(() -> getProgress() != 650, 3000);
+            Sleep.sleepUntil(() -> getProgress() != 650, 3000,500);
             return true;
         }
         return false;
