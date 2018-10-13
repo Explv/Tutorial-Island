@@ -1,13 +1,14 @@
 package sections;
 
+import events.DisableAudioEvent;
+import events.ToggleRoofsHiddenEvent;
+import events.ToggleShiftDropEvent;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.api.ui.Tab;
 import org.osbot.rs07.event.Event;
 import org.osbot.rs07.script.MethodProvider;
-import events.DisableAudioEvent;
 import utils.CachedWidget;
 import utils.Sleep;
-import events.ToggleRoofsHiddenEvent;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,7 +20,7 @@ public final class RuneScapeGuideSection extends TutorialSection {
     private boolean isAudioDisabled;
 
     public RuneScapeGuideSection() {
-        super("RuneScape Guide");
+        super("Gielinor Guide");
     }
 
     @Override
@@ -33,8 +34,8 @@ public final class RuneScapeGuideSection extends TutorialSection {
             case 0:
                 if (creationScreenIsVisible()) {
                     createRandomCharacter();
-                } else if (getDialogues().isPendingOption()) {
-                    getDialogues().selectOption(3);
+                } else if (getWidgets().getWidgetContainingText("What's your experience with Old School Runescape?") != null) {
+                    getDialogues().selectOption(random(1, 3));
                 } else {
                     talkToInstructor();
                 }
@@ -47,8 +48,10 @@ public final class RuneScapeGuideSection extends TutorialSection {
                     isAudioDisabled = disableAudio();
                 } else if (!getSettings().areRoofsEnabled()) {
                     toggleRoofsHidden();
+                } else if (!getSettings().isShiftDropActive()) {
+                    toggleShiftDrop();
                 } else if (getObjects().closest("Door").interact("Open")) {
-                    Sleep.sleepUntil(() -> getProgress() != 10, 5000);
+                    Sleep.sleepUntil(() -> getProgress() != 10, 5000, 500);
                 }
                 break;
             default:
@@ -80,7 +83,7 @@ public final class RuneScapeGuideSection extends TutorialSection {
         }
 
         if (getWidgets().getWidgetContainingText("Accept").interact()) {
-            Sleep.sleepUntil(() -> !creationScreenIsVisible(), 3000);
+            Sleep.sleepUntil(() -> !creationScreenIsVisible(), 3000, 500);
         }
     }
 
@@ -104,5 +107,11 @@ public final class RuneScapeGuideSection extends TutorialSection {
         Event toggleRoofsHiddenEvent = new ToggleRoofsHiddenEvent();
         execute(toggleRoofsHiddenEvent);
         return toggleRoofsHiddenEvent.hasFinished();
+    }
+
+    private boolean toggleShiftDrop() {
+        Event toggleShiftDrop = new ToggleShiftDropEvent();
+        execute(toggleShiftDrop);
+        return toggleShiftDrop.hasFinished();
     }
 }

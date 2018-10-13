@@ -1,7 +1,5 @@
 package sections;
 
-import org.osbot.rs07.api.filter.NameFilter;
-import org.osbot.rs07.api.filter.PositionFilter;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.Entity;
 import org.osbot.rs07.api.model.GroundDecoration;
@@ -72,9 +70,9 @@ public final class SurvivalSection extends TutorialSection {
                 break;
             case 120:
                 RS2Object gate = getObjects().closest("Gate");
-                if (gate != null) {
-                    if (gate.interact("Open")){
-                        Sleep.sleepUntil(() -> getProgress() == 130, 5000);
+                if (gate != null && gate.isVisible()) {
+                    if (gate.interact("Open")) {
+                        Sleep.sleepUntil(() -> getProgress() == 130, 5000,500);
                     }
                 } else {
                     getWalking().walkPath(PATH_TO_GATE);
@@ -86,7 +84,7 @@ public final class SurvivalSection extends TutorialSection {
     private void chopTree() {
         Entity tree = getObjects().closest("Tree");
         if (tree != null && tree.interact("Chop down")) {
-            Sleep.sleepUntil(() -> getInventory().contains("Logs") || !tree.exists(), 10_000);
+            Sleep.sleepUntil(() -> getInventory().contains("Logs") || !tree.exists(), 10_000,500);
         }
     }
 
@@ -94,7 +92,7 @@ public final class SurvivalSection extends TutorialSection {
         NPC fishingSpot = getNpcs().closest("Fishing spot");
         if (fishingSpot != null && fishingSpot.interact("Net")) {
             long rawShrimpCount = getInventory().getAmount("Raw shrimps");
-            Sleep.sleepUntil(() -> getInventory().getAmount("Raw shrimps") > rawShrimpCount, 10_000);
+            Sleep.sleepUntil(() -> getInventory().getAmount("Raw shrimps") > rawShrimpCount, 10_000,500);
         }
     }
 
@@ -109,7 +107,7 @@ public final class SurvivalSection extends TutorialSection {
             getInventory().getItem("Tinderbox").interact("Use");
         } else if (getInventory().getItem("Logs").interact()) {
             Position playerPos = myPosition();
-            Sleep.sleepUntil(() -> !myPosition().equals(playerPos), 10_000);
+            Sleep.sleepUntil(() -> !myPosition().equals(playerPos), 10_000,500);
         }
     }
 
@@ -121,7 +119,7 @@ public final class SurvivalSection extends TutorialSection {
         List<Position> allPositions = myPlayer().getArea(10).getPositions();
 
         // Remove any position with an object (except ground decorations, as they can be walked on)
-        for(RS2Object object : getObjects().getAll()){
+        for (RS2Object object : getObjects().getAll()) {
             if (object instanceof GroundDecoration) {
                 continue;
             }
@@ -140,7 +138,7 @@ public final class SurvivalSection extends TutorialSection {
             RS2Object fire = getObjects().closest("Fire");
             if (fire != null && fire.interact("Use")) {
                 long rawShrimpCount = getInventory().getAmount("Raw shrimps");
-                Sleep.sleepUntil(() -> getInventory().getAmount("Raw shrimps") < rawShrimpCount, 5000);
+                Sleep.sleepUntil(() -> getInventory().getAmount("Raw shrimps") < rawShrimpCount, 5000,500);
             }
         }
     }

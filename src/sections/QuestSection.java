@@ -45,7 +45,7 @@ public final class QuestSection extends TutorialSection {
             case 187:
                 // Use random emote
                 if (getWidgets().get(216, 1, new Random().nextInt(20)).interact()) {
-                    Sleep.sleepUntil(() -> getProgress() != 187, 5000);
+                    Sleep.sleepUntil(() -> getProgress() != 187, 5000,500);
                 }
                 break;
             case 190:
@@ -57,7 +57,7 @@ public final class QuestSection extends TutorialSection {
             case 210:
                 if (getWalking().walkPath(PATH_TO_QUEST_BUILDING)) {
                     if (getDoorHandler().handleNextObstacle(QUEST_BUILDING)) {
-                        Sleep.sleepUntil(() -> getProgress() != 210, 5000);
+                        Sleep.sleepUntil(() -> getProgress() != 210, 5000,500);
                     }
                 }
                 break;
@@ -72,7 +72,7 @@ public final class QuestSection extends TutorialSection {
                 break;
             case 250:
                 if (getObjects().closest("Ladder").interact("Climb-down")) {
-                    Sleep.sleepUntil(() -> getProgress() != 250, 5000);
+                    Sleep.sleepUntil(() -> getProgress() != 250, 5000,500);
                 }
                 break;
         }

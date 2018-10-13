@@ -28,6 +28,9 @@ public final class TutorialIsland extends Script {
         bankSection.exchangeContext(getBot());
         priestSection.exchangeContext(getBot());
         wizardSection.exchangeContext(getBot());
+
+        // prevents script from skipping character customization
+        sleep(4000);
     }
 
     @Override
