@@ -46,7 +46,7 @@ public final class BankSection extends TutorialSection {
     );
 
     public BankSection() {
-        super("Financial Advisor");
+        super("Account Guide");
     }
 
     @Override
