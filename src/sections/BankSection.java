@@ -3,10 +3,12 @@ package sections;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.RS2Object;
+import org.osbot.rs07.api.ui.RS2Widget;
 import utils.Sleep;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public final class BankSection extends TutorialSection {
 
@@ -83,6 +85,12 @@ public final class BankSection extends TutorialSection {
             case 530:
                 talkToInstructor();
                 break;
+            case 531:
+                openAccountManagementTab();
+                break;
+            case 532:
+                talkToInstructor();
+                break;
             case 540:
                 if (openDoorAtPosition(new Position(3130, 3124, 0))) {
                     Sleep.sleepUntil(() -> getProgress() != 540, 5000, 500);
@@ -94,5 +102,15 @@ public final class BankSection extends TutorialSection {
     private boolean openDoorAtPosition(final Position position) {
         RS2Object door = getObjects().closest(obj -> obj.getName().equals("Door") && obj.getPosition().equals(position));
         return door != null && door.interact("Open");
+    }
+
+    private void openAccountManagementTab() {
+        if (accountManagementWidget().isPresent() && accountManagementWidget().get().interact()) {
+            Sleep.sleepUntil(() -> getProgress() == 532, 5000, 500);
+        }
+    }
+
+    private Optional<RS2Widget> accountManagementWidget() {
+        return getWidgets().containingActions(548, "Account Management").stream().findFirst();
     }
 }
