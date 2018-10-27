@@ -39,16 +39,16 @@ public final class SurvivalSection extends TutorialSection {
                 getTabs().open(Tab.INVENTORY);
                 break;
             case 40:
-                chopTree();
+                fish();
                 break;
             case 50:
-                lightFire();
-                break;
-            case 60:
                 getTabs().open(Tab.SKILLS);
                 break;
-            case 70:
+            case 60:
                 talkToInstructor();
+                break;
+            case 70:
+                chopTree();
                 break;
             case 80:
             case 90:
@@ -72,7 +72,7 @@ public final class SurvivalSection extends TutorialSection {
                 RS2Object gate = getObjects().closest("Gate");
                 if (gate != null && gate.isVisible()) {
                     if (gate.interact("Open")) {
-                        Sleep.sleepUntil(() -> getProgress() == 130, 5000,500);
+                        Sleep.sleepUntil(() -> getProgress() == 130, 5000, 600);
                     }
                 } else {
                     getWalking().walkPath(PATH_TO_GATE);
@@ -84,7 +84,7 @@ public final class SurvivalSection extends TutorialSection {
     private void chopTree() {
         Entity tree = getObjects().closest("Tree");
         if (tree != null && tree.interact("Chop down")) {
-            Sleep.sleepUntil(() -> getInventory().contains("Logs") || !tree.exists(), 10_000,500);
+            Sleep.sleepUntil(() -> getInventory().contains("Logs") || !tree.exists(), 10_000, 600);
         }
     }
 
@@ -92,7 +92,7 @@ public final class SurvivalSection extends TutorialSection {
         NPC fishingSpot = getNpcs().closest("Fishing spot");
         if (fishingSpot != null && fishingSpot.interact("Net")) {
             long rawShrimpCount = getInventory().getAmount("Raw shrimps");
-            Sleep.sleepUntil(() -> getInventory().getAmount("Raw shrimps") > rawShrimpCount, 10_000,500);
+            Sleep.sleepUntil(() -> getInventory().getAmount("Raw shrimps") > rawShrimpCount, 10_000, 600);
         }
     }
 
@@ -107,7 +107,7 @@ public final class SurvivalSection extends TutorialSection {
             getInventory().getItem("Tinderbox").interact("Use");
         } else if (getInventory().getItem("Logs").interact()) {
             Position playerPos = myPosition();
-            Sleep.sleepUntil(() -> !myPosition().equals(playerPos), 10_000,500);
+            Sleep.sleepUntil(() -> !myPosition().equals(playerPos), 10_000, 600);
         }
     }
 
@@ -138,7 +138,7 @@ public final class SurvivalSection extends TutorialSection {
             RS2Object fire = getObjects().closest("Fire");
             if (fire != null && fire.interact("Use")) {
                 long rawShrimpCount = getInventory().getAmount("Raw shrimps");
-                Sleep.sleepUntil(() -> getInventory().getAmount("Raw shrimps") < rawShrimpCount, 5000,500);
+                Sleep.sleepUntil(() -> getInventory().getAmount("Raw shrimps") < rawShrimpCount, 5000, 600);
             }
         }
     }

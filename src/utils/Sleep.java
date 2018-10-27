@@ -2,7 +2,6 @@ package utils;
 
 import org.osbot.rs07.utility.ConditionalSleep;
 
-import java.net.URLEncoder;
 import java.util.function.BooleanSupplier;
 
 public final class Sleep extends ConditionalSleep {

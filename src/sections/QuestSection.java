@@ -3,11 +3,10 @@ package sections;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.Tab;
-import utils.CachedWidget;
 import utils.Sleep;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.Arrays;
+import java.util.List;
 
 public final class QuestSection extends TutorialSection {
 
@@ -39,25 +38,22 @@ public final class QuestSection extends TutorialSection {
             return;
         }
         switch (getProgress()) {
-            case 183:
-                getTabs().open(Tab.EMOTES);
-                break;
-            case 187:
-                // Use random emote
-                if (getWidgets().get(216, 1, new Random().nextInt(20)).interact()) {
-                    Sleep.sleepUntil(() -> getProgress() != 187, 5000,500);
+            case 200:
+                boolean isRunning = getSettings().isRunning();
+                if (getSettings().setRunning(!isRunning)) {
+                    Sleep.sleepUntil(() -> getSettings().isRunning() == !isRunning, 1200);
                 }
                 break;
-            case 190:
-                getTabs().open(Tab.SETTINGS);
-                break;
-            case 200:
-                getSettings().setRunning(true);
-                break;
             case 210:
-                if (getWalking().walkPath(PATH_TO_QUEST_BUILDING)) {
-                    if (getDoorHandler().handleNextObstacle(QUEST_BUILDING)) {
-                        Sleep.sleepUntil(() -> getProgress() != 210, 5000,500);
+                if (!getSettings().isRunning()) {
+                    if (getSettings().setRunning(true)) {
+                        Sleep.sleepUntil(() -> getSettings().isRunning(), 1200);
+                    }
+                } else {
+                    if (getWalking().walkPath(PATH_TO_QUEST_BUILDING)) {
+                        if (getDoorHandler().handleNextObstacle(QUEST_BUILDING)) {
+                            Sleep.sleepUntil(() -> getProgress() != 210, 5000, 600);
+                        }
                     }
                 }
                 break;
@@ -72,7 +68,7 @@ public final class QuestSection extends TutorialSection {
                 break;
             case 250:
                 if (getObjects().closest("Ladder").interact("Climb-down")) {
-                    Sleep.sleepUntil(() -> getProgress() != 250, 5000,500);
+                    Sleep.sleepUntil(() -> getProgress() != 250, 5000, 600);
                 }
                 break;
         }

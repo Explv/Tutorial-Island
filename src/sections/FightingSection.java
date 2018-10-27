@@ -37,7 +37,7 @@ public final class FightingSection extends TutorialSection {
                 case 400:
                     VIEW_EQUIPMENT_STATS_WIDGET.get(getWidgets()).ifPresent(widget -> {
                         if (widget.interact()) {
-                            Sleep.sleepUntil(() -> getProgress() != 400, 3000,500);
+                            Sleep.sleepUntil(() -> getProgress() != 400, 3000, 600);
                         }
                     });
                     break;
@@ -89,7 +89,7 @@ public final class FightingSection extends TutorialSection {
                     if (!LADDER_AREA.contains(myPosition())) {
                         getWalking().walk(LADDER_AREA);
                     } else if (getObjects().closest("Ladder").interact("Climb-up")) {
-                        Sleep.sleepUntil(() -> !LADDER_AREA.contains(myPosition()), 5000,500);
+                        Sleep.sleepUntil(() -> !LADDER_AREA.contains(myPosition()), 5000, 600);
                     }
                     break;
             }
@@ -103,7 +103,7 @@ public final class FightingSection extends TutorialSection {
         if (!OUTSIDE_RAT_CAGE_GATE_AREA.contains(myPosition())) {
             getWalking().walk(OUTSIDE_RAT_CAGE_GATE_AREA);
         } else if (getObjects().closest("Gate").interact("Open")) {
-            Sleep.sleepUntil(this::inRatCage, 5000,500);
+            Sleep.sleepUntil(this::inRatCage, 5000, 600);
         }
     }
 
@@ -111,7 +111,7 @@ public final class FightingSection extends TutorialSection {
         if (!INSIDE_RAT_CAGE_GATE_AREA.contains(myPosition())) {
             getWalking().walk(INSIDE_RAT_CAGE_GATE_AREA);
         } else if (getObjects().closest("Gate").interact("Open")) {
-            Sleep.sleepUntil(() -> !inRatCage(), 5000,500);
+            Sleep.sleepUntil(() -> !inRatCage(), 5000, 600);
         }
     }
 
@@ -123,7 +123,7 @@ public final class FightingSection extends TutorialSection {
         //noinspection unchecked
         NPC giantRat = getNpcs().closest(npc -> npc.getName().equals("Giant rat") && npc.isAttackable());
         if (giantRat != null && giantRat.interact("Attack")) {
-            Sleep.sleepUntil(() -> myPlayer().getInteracting() != null, 5000,500);
+            Sleep.sleepUntil(() -> myPlayer().getInteracting() != null, 5000, 600);
         }
     }
 

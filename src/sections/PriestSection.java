@@ -60,7 +60,7 @@ public final class PriestSection extends TutorialSection {
                 break;
             case 610:
                 if (getDoorHandler().handleNextObstacle(new Position(3122, 3101, 0))) {
-                    Sleep.sleepUntil(() -> getProgress() != 610, 5000,500);
+                    Sleep.sleepUntil(() -> getProgress() != 610, 5000, 600);
                 }
                 break;
         }

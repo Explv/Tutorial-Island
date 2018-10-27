@@ -5,9 +5,7 @@ import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.api.ui.Tab;
-import org.osbot.rs07.event.WebWalkEvent;
 import org.osbot.rs07.script.MethodProvider;
-import org.osbot.rs07.utility.Condition;
 import utils.Sleep;
 
 import java.util.Arrays;
@@ -78,7 +76,7 @@ public final class MiningSection extends TutorialSection {
                 Optional<RS2Widget> daggerWidgetOpt = getDaggerWidget();
                 if (daggerWidgetOpt.isPresent()) {
                     if (daggerWidgetOpt.get().interact()) {
-                        Sleep.sleepUntil(() -> getInventory().contains("Bronze dagger"), 6000,500);
+                        Sleep.sleepUntil(() -> getInventory().contains("Bronze dagger"), 6000, 600);
                     }
                 } else {
                     smith();
@@ -87,7 +85,7 @@ public final class MiningSection extends TutorialSection {
             case 360:
                 if (getWalking().walkPath(PATH_TO_GATE)) {
                     if (getDoorHandler().handleNextObstacle(new Position(3096, 9503, 0))) {
-                        Sleep.sleepUntil(() -> getProgress() != 360, 5000,500);
+                        Sleep.sleepUntil(() -> getProgress() != 360, 5000, 600);
                     }
                 }
                 break;
@@ -100,7 +98,7 @@ public final class MiningSection extends TutorialSection {
         } else if (!"Bronze bar".equals(getInventory().getSelectedItemName())) {
             getInventory().getItem("Bronze bar").interact("Use");
         } else if (getObjects().closest("Anvil").interact("Use")) {
-            Sleep.sleepUntil(() -> getDaggerWidget().isPresent(), 5000,500);
+            Sleep.sleepUntil(() -> getDaggerWidget().isPresent(), 5000, 600);
         }
     }
 
@@ -116,21 +114,21 @@ public final class MiningSection extends TutorialSection {
         if (!"Tin ore".equals(getInventory().getSelectedItemName())) {
             getInventory().getItem("Tin ore").interact("Use");
         } else if (getObjects().closest("Furnace").interact("Use")) {
-            Sleep.sleepUntil(() -> getInventory().contains("Bronze bar"), 5000,500);
+            Sleep.sleepUntil(() -> getInventory().contains("Bronze bar"), 5000, 600);
         }
     }
 
     private void prospect(Rock rock) {
         RS2Object closestRock = rock.getClosestWithOre(getBot().getMethods());
         if (closestRock != null && closestRock.interact("Prospect")) {
-            Sleep.sleepUntil(this::pendingContinue, 6000,500);
+            Sleep.sleepUntil(this::pendingContinue, 6000, 600);
         }
     }
 
     private void mine(Rock rock) {
         RS2Object closestRock = rock.getClosestWithOre(getBot().getMethods());
         if (closestRock != null && closestRock.interact("Mine")) {
-            Sleep.sleepUntil(this::pendingContinue, 6000,500);
+            Sleep.sleepUntil(this::pendingContinue, 6000, 600);
         }
     }
 }

@@ -5,7 +5,7 @@ import org.osbot.rs07.script.ScriptManifest;
 import sections.*;
 import utils.Sleep;
 
-@ScriptManifest(author = "Explv", name = "Explv's Tutorial Island", info = "Completes Tutorial Island", version = 5.2, logo = "")
+@ScriptManifest(author = "Explv", name = "Explv's Tutorial Island Latest", info = "Completes Tutorial Island", version = 5.3, logo = "")
 public final class TutorialIsland extends Script {
 
     private final TutorialSection rsGuideSection = new RuneScapeGuideSection();
@@ -31,7 +31,7 @@ public final class TutorialIsland extends Script {
         wizardSection.exchangeContext(getBot());
 
         // prevents script from skipping character customization
-        Sleep.sleepUntil(() -> getClient().isLoggedIn() && myPlayer().isVisible() && myPlayer().isOnScreen(), 6000, 500);
+        Sleep.sleepUntil(() -> getClient().isLoggedIn() && myPlayer().isVisible() && myPlayer().isOnScreen(), 6000, 600);
     }
 
     @Override

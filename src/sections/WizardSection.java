@@ -50,7 +50,7 @@ public final class WizardSection extends TutorialSection {
         }
 
         if (getInstructor() == null) {
-            Sleep.sleepUntil(() -> myPlayer().isAnimating(), 5000,500);
+            Sleep.sleepUntil(() -> myPlayer().isAnimating(), 5000, 600);
             getWalking().walkPath(PATH_TO_WIZARD_BUILDING);
         }
 
@@ -94,7 +94,7 @@ public final class WizardSection extends TutorialSection {
     private boolean attackChicken() {
         NPC chicken = getNpcs().closest("Chicken");
         if (chicken != null && getMagic().castSpellOnEntity(Spells.NormalSpells.WIND_STRIKE, chicken)) {
-            Sleep.sleepUntil(() -> getProgress() != 650, 3000,500);
+            Sleep.sleepUntil(() -> getProgress() != 650, 3000, 600);
             return true;
         }
         return false;
