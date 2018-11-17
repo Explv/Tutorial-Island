@@ -18,7 +18,7 @@ import java.util.Random;
 
 public final class RuneScapeGuideSection extends TutorialSection {
 
-    private final CachedWidget creationScreenWidget = new CachedWidget("Welcome to RuneScape");
+    private final CachedWidget creationScreenWidget = new CachedWidget("Head");
     private final CachedWidget experienceWidget = new CachedWidget("What's your experience with Old School Runescape?");
     private boolean isAudioDisabled;
 
@@ -35,12 +35,12 @@ public final class RuneScapeGuideSection extends TutorialSection {
 
         switch (getProgress()) {
             case 0:
+            case 1:
+            case 2:
                 if (creationScreenIsVisible()) {
                     createRandomCharacter();
-                } else if (experienceWidget.get(getWidgets()).isPresent()) {
-                    if (getDialogues().selectOption(random(1, 3))) {
-                        Sleep.sleepUntil(() -> !experienceWidget.get(getWidgets()).map(widget -> !widget.isVisible()).orElse(true), 2000);
-                    }
+                } else if (experienceWidget.get(getWidgets()).isPresent() && getDialogues().selectOption(random(1, 3))) {
+                    Sleep.sleepUntil(() -> !experienceWidget.get(getWidgets()).map(widget -> !widget.isVisible()).orElse(true), 2000, 600);
                 } else {
                     talkToInstructor();
                 }
@@ -77,6 +77,9 @@ public final class RuneScapeGuideSection extends TutorialSection {
     }
 
     private void createRandomCharacter() throws InterruptedException {
+        // letting all the widgets show up
+        sleep(2000);
+
         if (new Random().nextInt(2) == 1) {
             getWidgets().getWidgetContainingText("Female").interact();
         }

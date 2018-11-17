@@ -3,7 +3,6 @@ package script;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import sections.*;
-import utils.Sleep;
 
 @ScriptManifest(author = "Explv", name = "Explv's Tutorial Island", info = "Completes Tutorial Island", version = 5.3, logo = "")
 public final class TutorialIsland extends Script {
@@ -29,16 +28,13 @@ public final class TutorialIsland extends Script {
         bankSection.exchangeContext(getBot());
         priestSection.exchangeContext(getBot());
         wizardSection.exchangeContext(getBot());
-
-        // prevents script from skipping character customization
-        Sleep.sleepUntil(() -> getClient().isLoggedIn() && myPlayer().isVisible() && myPlayer().isOnScreen(), 6000, 600);
     }
 
     @Override
     public final int onLoop() throws InterruptedException {
         if (isTutorialIslandCompleted()) {
-           stop(true);
-           return 0;
+            stop(true);
+            return 0;
         }
 
         switch (getTutorialSection()) {

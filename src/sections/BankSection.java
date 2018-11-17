@@ -4,13 +4,17 @@ import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.api.ui.RS2Widget;
+import utils.CachedWidget;
 import utils.Sleep;
+import utils.WidgetActionFilter;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 public final class BankSection extends TutorialSection {
+
+    private final CachedWidget accountManagementWidget = new CachedWidget(new WidgetActionFilter("Account Management"));
 
     private static final Area BANK_AREA = new Area(
             new int[][]{
@@ -105,12 +109,9 @@ public final class BankSection extends TutorialSection {
     }
 
     private void openAccountManagementTab() {
-        if (accountManagementWidget().isPresent() && accountManagementWidget().get().interact()) {
+        if ( accountManagementWidget.get(getWidgets()).isPresent() && accountManagementWidget.get(getWidgets()).get().interact()) {
             Sleep.sleepUntil(() -> getProgress() == 532, 5000, 600);
         }
     }
 
-    private Optional<RS2Widget> accountManagementWidget() {
-        return getWidgets().containingActions(548, "Account Management").stream().findFirst();
-    }
 }
