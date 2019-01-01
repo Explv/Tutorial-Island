@@ -57,10 +57,7 @@ public final class RuneScapeGuideSection extends TutorialSection {
                 break;
             case 3:
                 if (!EnableFixedModeEvent.isFixedModeEnabled(this)) {
-                    if (execute(new EnableFixedModeEvent()).hasFinished()) {
-                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(getBot().getBotPanel(), "Please restart the client"));
-                        getBot().getScriptExecutor().stop();
-                    }
+                    execute(new EnableFixedModeEvent());
                 } else {
                     getTabs().open(Tab.SETTINGS);
                 }
