@@ -36,7 +36,16 @@ public final class WizardSection extends TutorialSection {
             new Position(3141, 3086, 0)
     );
 
-    private static final Area CHICKEN_AREA = new Area(3139, 3091, 3140, 3090);
+    private static final Area CHICKEN_AREA = new Area(
+            new int[][]{
+                    { 3140, 3088 },
+                    { 3140, 3089 },
+                    { 3137, 3092 },
+                    { 3141, 3092 },
+                    { 3144, 3089 },
+                    { 3144, 3088 }
+            }
+    );
 
     public WizardSection() {
         super("Magic Instructor");
