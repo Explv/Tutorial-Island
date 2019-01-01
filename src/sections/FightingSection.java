@@ -128,7 +128,7 @@ public final class FightingSection extends TutorialSection {
     }
 
     private void wieldItem(String name) {
-        if (getInventory().getItem(name).interact("Wield")) {
+        if (getInventory().getItem(name).interact("Wield", "Equip")) {
             Sleep.sleepUntil(() -> getEquipment().contains(name), 1500);
         }
     }
