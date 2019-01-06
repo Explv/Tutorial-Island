@@ -58,7 +58,7 @@ public final class SurvivalSection extends TutorialSection {
                     getTabs().open(Tab.INVENTORY);
                 } else if (getInventory().getAmount(item -> item.getName().contains("shrimp")) < 2) {
                     fish();
-                } else if (getObjects().closest("Fire") == null) {
+                } else if (getObjects().closest("Fire") == null || getWidgets().getWidgetContainingText("time to light a fire") != null) {
                     if (!getInventory().contains("Logs")) {
                         chopTree();
                     } else {
