@@ -109,7 +109,7 @@ public final class RuneScapeGuideSection extends TutorialSection {
                     }
                 }
             default:
-                Sleep.sleepUntil(() -> getConfigs().get(1042) != configValue, 1200);
+                Sleep.sleepUntil(() -> getConfigs().get(configID) != configValue, 1200);
         }
     }
 
