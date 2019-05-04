@@ -1,10 +1,7 @@
 package sections;
 
 import org.osbot.rs07.api.map.Position;
-import org.osbot.rs07.api.model.Entity;
-import org.osbot.rs07.api.model.GroundDecoration;
-import org.osbot.rs07.api.model.NPC;
-import org.osbot.rs07.api.model.RS2Object;
+import org.osbot.rs07.api.model.*;
 import org.osbot.rs07.api.ui.Tab;
 import org.osbot.rs07.event.WalkingEvent;
 import utils.Sleep;
@@ -56,9 +53,9 @@ public final class SurvivalSection extends TutorialSection {
             case 110:
                 if (getTabs().getOpen() != Tab.INVENTORY) {
                     getTabs().open(Tab.INVENTORY);
-                } else if (getInventory().getAmount(item -> item.getName().contains("shrimp")) < 2) {
+                } else if (!getInventory().contains("Raw shrimps")) {
                     fish();
-                } else if (getObjects().closest("Fire") == null) {
+                } else if (getObjects().closest("Fire") == null || getWidgets().getWidgetContainingText("time to light a fire") != null) {
                     if (!getInventory().contains("Logs")) {
                         chopTree();
                     } else {

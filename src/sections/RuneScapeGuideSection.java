@@ -10,13 +10,24 @@ import org.osbot.rs07.event.Event;
 import org.osbot.rs07.script.MethodProvider;
 import utils.CachedWidget;
 import utils.Sleep;
+import utils.WidgetActionFilter;
 
-import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public final class RuneScapeGuideSection extends TutorialSection {
+
+
+    private final CachedWidget nameAcceptedWidget = new CachedWidget("Great! This display name is");
+    private final CachedWidget nameRejectedWidget = new CachedWidget("Try clicking one of our suggestions, instead");
+
+    private final CachedWidget nameLookupWidget = new CachedWidget(new WidgetActionFilter("Look up name"));
+    private final CachedWidget nameInputWidget = new CachedWidget(w -> w.getMessage().contains("What name would you like to check"));
+    private final CachedWidget nameSetWidget = new CachedWidget("Set name");
+    private final CachedWidget nameScreenDetectionWidget = new CachedWidget("Choose display name");
 
     private final CachedWidget creationScreenWidget = new CachedWidget("Head");
     private final CachedWidget experienceWidget = new CachedWidget("What's your experience with Old School Runescape?");
@@ -37,20 +48,21 @@ public final class RuneScapeGuideSection extends TutorialSection {
             case 0:
             case 1:
             case 2:
-                if (creationScreenIsVisible()) {
+                if (nameScreenDetectionWidget.get(getWidgets()).isPresent()) {
+                    setDisplayName();
+                } else if (isCreationScreenVisible()) {
                     createRandomCharacter();
-                } else if (experienceWidget.get(getWidgets()).isPresent() && getDialogues().selectOption(random(1, 3))) {
-                    Sleep.sleepUntil(() -> !experienceWidget.get(getWidgets()).map(widget -> !widget.isVisible()).orElse(true), 2000, 600);
+                } else if (experienceWidget.get(getWidgets()).isPresent()) {
+                    if (getDialogues().selectOption(random(1, 3))) {
+                        Sleep.sleepUntil(() -> !experienceWidget.get(getWidgets()).map(widget -> !widget.isVisible()).orElse(true), 2000, 600);
+                    }
                 } else {
                     talkToInstructor();
                 }
                 break;
             case 3:
                 if (!EnableFixedModeEvent.isFixedModeEnabled(this)) {
-                    if (execute(new EnableFixedModeEvent()).hasFinished()) {
-                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(getBot().getBotPanel(), "Please restart the client"));
-                        getBot().getScriptExecutor().stop();
-                    }
+                    execute(new EnableFixedModeEvent());
                 } else {
                     getTabs().open(Tab.SETTINGS);
                 }
@@ -72,14 +84,42 @@ public final class RuneScapeGuideSection extends TutorialSection {
         }
     }
 
-    private boolean creationScreenIsVisible() {
+    private void setDisplayName() {
+//                     && nameSetWidget.get(getWidgets()).isPresent()
+//                && nameSetWidget.get(getWidgets()).get().interact()) {
+//            Sleep.sleepUntil(() -> !nameScreenDetectionWidget.get(getWidgets()).isPresent(), 8000, 600);
+//
+
+
+        if (nameAcceptedWidget.get(getWidgets()).isPresent()) {
+            nameSetWidget.get(getWidgets()).ifPresent(rs2Widget -> {
+                if (rs2Widget.interact()) {
+                    Sleep.sleepUntil(() -> !nameScreenDetectionWidget.get(getWidgets()).isPresent(), 8000, 600);
+                }
+            });
+        } else if (nameInputWidget.get(getWidgets()).isPresent()
+                && getKeyboard().typeString(generateRandomString(8, 12), true)) {
+            Sleep.sleepUntil(() -> nameAcceptedWidget.get(getWidgets()).isPresent() || nameRejectedWidget.get(getWidgets()).isPresent(), 8000, 600);
+        } else if (nameLookupWidget.get(getWidgets()).isPresent()
+                && nameLookupWidget.get(getWidgets()).get().interact()) {
+            Sleep.sleepUntil(() -> nameInputWidget.get(getWidgets()).isPresent(), 8000, 600);
+        }
+    }
+
+    private String generateRandomString(int min, int maxLength) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "abcdefghijklmnopqrstuvwxyz"
+                + "0123456789";
+        return ThreadLocalRandom.current().ints(ThreadLocalRandom.current().nextInt(maxLength - min, maxLength) + 1, 0, chars.length())
+                .mapToObj(i -> "" + chars.charAt(i))
+                .collect(Collectors.joining());
+    }
+
+    private boolean isCreationScreenVisible() {
         return creationScreenWidget.get(getWidgets()).filter(RS2Widget::isVisible).isPresent();
     }
 
     private void createRandomCharacter() throws InterruptedException {
-        // letting all the widgets show up
-        sleep(2000);
-
         if (new Random().nextInt(2) == 1) {
             getWidgets().getWidgetContainingText("Female").interact();
         }
@@ -97,7 +137,7 @@ public final class RuneScapeGuideSection extends TutorialSection {
         }
 
         if (getWidgets().getWidgetContainingText("Accept").interact()) {
-            Sleep.sleepUntil(() -> !creationScreenIsVisible(), 3000, 600);
+            Sleep.sleepUntil(() -> !isCreationScreenVisible(), 3000, 600);
         }
     }
 
