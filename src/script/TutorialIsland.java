@@ -4,7 +4,7 @@ import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import sections.*;
 
-@ScriptManifest(author = "Explv", name = "Explv's Tutorial Island", info = "Completes Tutorial Island", version = 6.0, logo = "")
+@ScriptManifest(author = "Explv", name = "Explv's Tutorial Island", info = "Completes Tutorial Island", version = 6.1, logo = "")
 public final class TutorialIsland extends Script {
 
     private final TutorialSection rsGuideSection = new RuneScapeGuideSection();
