@@ -13,6 +13,7 @@ public final class FightingSection extends TutorialSection {
     private static final Area LADDER_AREA = new Area(3108, 9523, 3114, 9529);
     private static final Area INSIDE_RAT_CAGE_GATE_AREA = new Area(3107, 9517, 3110, 9520);
     private static final Area OUTSIDE_RAT_CAGE_GATE_AREA = new Area(3111, 9516, 3113, 9521);
+	private static final Area WRONG_DOOR = new Area(3090, 9508, 3097, 9496);
 
     private final CachedWidget VIEW_EQUIPMENT_STATS_WIDGET = new CachedWidget(new WidgetActionFilter("View equipment stats"));
 
@@ -102,7 +103,9 @@ public final class FightingSection extends TutorialSection {
     private void enterRatCage() {
         if (!OUTSIDE_RAT_CAGE_GATE_AREA.contains(myPosition())) {
             getWalking().walk(OUTSIDE_RAT_CAGE_GATE_AREA);
-        } else if (getObjects().closest("Gate").interact("Open")) {
+        } else if (getObjects()
+                   .closest(ob -> ob.getName() != null && ob.getName().equals("Gate") && !WRONG_DOOR.contains(ob))
+                   .interact("Open")) {
             Sleep.sleepUntil(this::inRatCage, 5000, 600);
         }
     }
