@@ -124,11 +124,7 @@ public final class RuneScapeGuideSection extends TutorialSection {
 
     }
 
-    private boolean needToRecharge(){
-        Item glory = getEquipment().getItemInSlot(EquipmentSlot.AMULET.slot);
 
-        return glory != null && glory.getName().contains("\\d");
-    }
 
     private String generateRandomString(int maxLength) {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
