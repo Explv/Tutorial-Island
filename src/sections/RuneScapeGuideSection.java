@@ -4,6 +4,8 @@ import events.DisableAudioEvent;
 import events.EnableFixedModeEvent;
 import events.ToggleRoofsHiddenEvent;
 import events.ToggleShiftDropEvent;
+import org.osbot.rs07.api.model.Item;
+import org.osbot.rs07.api.ui.EquipmentSlot;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.api.ui.Tab;
 import org.osbot.rs07.event.Event;
@@ -24,7 +26,7 @@ public final class RuneScapeGuideSection extends TutorialSection {
     private final CachedWidget suggestedNameWidget = new CachedWidget(new WidgetActionFilter("Set name"));
 
     private final CachedWidget nameLookupWidget = new CachedWidget(w -> w.getMessage().contains("Look up name"));
-    private final CachedWidget nameInputWidget = new CachedWidget(w -> w.getMessage().contains("What name would you like to check"));
+    private final CachedWidget nameInputWidget = new CachedWidget(w -> w.getMessage().contains("Please pick a unique display name"));
     private final CachedWidget nameSetWidget = new CachedWidget("Set name");
     private final CachedWidget nameWindowWidget = new CachedWidget("Choose display name");
 
@@ -120,6 +122,12 @@ public final class RuneScapeGuideSection extends TutorialSection {
             Sleep.sleepUntil(() -> nameInputWidget.get(getWidgets()).isPresent() && nameInputWidget.get(getWidgets()).get().isVisible(), 8000, 600);
         }
 
+    }
+
+    private boolean needToRecharge(){
+        Item glory = getEquipment().getItemInSlot(EquipmentSlot.AMULET.slot);
+
+        return glory != null && glory.getName().contains("\\d");
     }
 
     private String generateRandomString(int maxLength) {

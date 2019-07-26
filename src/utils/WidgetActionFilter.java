@@ -18,7 +18,7 @@ public final class WidgetActionFilter implements Filter<RS2Widget> {
         }
         for (final String widgetAction : rs2Widget.getInteractActions()) {
             for (final String matchAction : actions) {
-                if (widgetAction.equals(matchAction)) {
+                if (widgetAction != null && widgetAction.equals(matchAction)) {
                     return true;
                 }
             }
