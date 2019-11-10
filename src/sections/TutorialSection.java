@@ -3,7 +3,7 @@ package sections;
 import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.script.MethodProvider;
-import utils.Sleep;
+import util.Sleep;
 
 import java.awt.event.KeyEvent;
 
@@ -33,7 +33,7 @@ public abstract class TutorialSection extends MethodProvider {
 
     protected boolean pendingContinue() {
         RS2Widget continueWidget = getContinueWidget();
-        return continueWidget!= null && continueWidget.isVisible();
+        return continueWidget != null && continueWidget.isVisible();
     }
 
     protected boolean selectContinue() {

@@ -3,7 +3,7 @@ package sections;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.Tab;
-import utils.Sleep;
+import util.Sleep;
 
 import java.util.Arrays;
 import java.util.List;

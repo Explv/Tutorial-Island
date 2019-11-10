@@ -3,18 +3,14 @@ package sections;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.RS2Object;
-import org.osbot.rs07.api.ui.RS2Widget;
-import utils.CachedWidget;
-import utils.Sleep;
-import utils.WidgetActionFilter;
+import util.Sleep;
+import util.widget.CachedWidget;
+import util.widget.filters.WidgetActionFilter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public final class BankSection extends TutorialSection {
-
-    private final CachedWidget accountManagementWidget = new CachedWidget(new WidgetActionFilter("Account Management"));
 
     private static final Area BANK_AREA = new Area(
             new int[][]{
@@ -41,13 +37,13 @@ public final class BankSection extends TutorialSection {
                     {3125, 3121}
             }
     );
-
     private static final List<Position> PATH_TO_BANK = Arrays.asList(
             new Position(3111, 3123, 0),
             new Position(3114, 3119, 0),
             new Position(3118, 3116, 0),
             new Position(3121, 3118, 0)
     );
+    private final CachedWidget accountManagementWidget = new CachedWidget(new WidgetActionFilter("Account Management"));
 
     public BankSection() {
         super("Account Guide");
@@ -109,7 +105,7 @@ public final class BankSection extends TutorialSection {
     }
 
     private void openAccountManagementTab() {
-        if ( accountManagementWidget.get(getWidgets()).isPresent() && accountManagementWidget.get(getWidgets()).get().interact()) {
+        if (accountManagementWidget.isVisible(getWidgets()) && accountManagementWidget.interact(getWidgets())) {
             Sleep.sleepUntil(() -> getProgress() == 532, 5000, 600);
         }
     }

@@ -1,4 +1,4 @@
-package utils;
+package util;
 
 import org.osbot.rs07.utility.ConditionalSleep;
 
@@ -18,16 +18,16 @@ public final class Sleep extends ConditionalSleep {
         this.condition = condition;
     }
 
-    @Override
-    public final boolean condition() throws InterruptedException {
-        return condition.getAsBoolean();
-    }
-
     public static boolean sleepUntil(final BooleanSupplier condition, final int timeout) {
         return new Sleep(condition, timeout).sleep();
     }
 
     public static boolean sleepUntil(final BooleanSupplier condition, final int timeout, final int interval) {
         return new Sleep(condition, timeout, interval).sleep();
+    }
+
+    @Override
+    public boolean condition() throws InterruptedException {
+        return condition.getAsBoolean();
     }
 }

@@ -3,9 +3,11 @@ package script;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import sections.*;
+import util.Sleep;
 
-@ScriptManifest(author = "Explv", name = "Explv's Tutorial Island", info = "Completes Tutorial Island", version = 6.1, logo = "")
+@ScriptManifest(author = "Explv", name = "Explv's Tutorial Island " + TutorialIsland.VERSION, info = "Completes Tutorial Island", version=0, logo = "")
 public final class TutorialIsland extends Script {
+    public static final String VERSION = "v6.2";
 
     private final TutorialSection rsGuideSection = new RuneScapeGuideSection();
     private final TutorialSection survivalSection = new SurvivalSection();
@@ -18,7 +20,7 @@ public final class TutorialIsland extends Script {
     private final TutorialSection wizardSection = new WizardSection();
 
     @Override
-    public void onStart() throws InterruptedException {
+    public void onStart() {
         rsGuideSection.exchangeContext(getBot());
         survivalSection.exchangeContext(getBot());
         cookingSection.exchangeContext(getBot());
@@ -28,6 +30,8 @@ public final class TutorialIsland extends Script {
         bankSection.exchangeContext(getBot());
         priestSection.exchangeContext(getBot());
         wizardSection.exchangeContext(getBot());
+
+        Sleep.sleepUntil(() -> getClient().isLoggedIn() && myPlayer().isVisible() && myPlayer().isOnScreen(), 6000, 500);
     }
 
     @Override

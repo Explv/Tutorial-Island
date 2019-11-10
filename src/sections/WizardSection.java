@@ -6,7 +6,7 @@ import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.ui.Spells;
 import org.osbot.rs07.api.ui.Tab;
 import org.osbot.rs07.event.WalkingEvent;
-import utils.Sleep;
+import util.Sleep;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,12 +38,12 @@ public final class WizardSection extends TutorialSection {
 
     private static final Area CHICKEN_AREA = new Area(
             new int[][]{
-                    { 3140, 3088 },
-                    { 3140, 3089 },
-                    { 3137, 3092 },
-                    { 3141, 3092 },
-                    { 3144, 3089 },
-                    { 3144, 3088 }
+                    {3140, 3088},
+                    {3140, 3089},
+                    {3137, 3092},
+                    {3141, 3092},
+                    {3144, 3089},
+                    {3144, 3088}
             }
     );
 

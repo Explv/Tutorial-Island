@@ -1,4 +1,4 @@
-package utils;
+package util.widget.filters;
 
 import org.osbot.rs07.api.filter.Filter;
 import org.osbot.rs07.api.ui.RS2Widget;
@@ -18,7 +18,7 @@ public final class WidgetActionFilter implements Filter<RS2Widget> {
         }
         for (final String widgetAction : rs2Widget.getInteractActions()) {
             for (final String matchAction : actions) {
-                if (widgetAction.equals(matchAction)) {
+                if (matchAction.equals(widgetAction)) {
                     return true;
                 }
             }

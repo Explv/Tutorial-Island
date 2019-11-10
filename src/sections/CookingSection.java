@@ -2,7 +2,7 @@ package sections;
 
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
-import utils.Sleep;
+import util.Sleep;
 
 import java.util.Arrays;
 import java.util.List;

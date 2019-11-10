@@ -6,11 +6,38 @@ import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.api.ui.Tab;
 import org.osbot.rs07.script.MethodProvider;
-import utils.Sleep;
+import util.Sleep;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+enum Rock {
+
+    COPPER((short) 4645, (short) 4510),
+    TIN((short) 53);
+
+    private final short[] COLOURS;
+
+    Rock(final short... COLOURS) {
+        this.COLOURS = COLOURS;
+    }
+
+    public RS2Object getClosestWithOre(final MethodProvider S) {
+        //noinspection unchecked
+        return S.getObjects().closest(obj -> {
+            short[] colours = obj.getDefinition().getModifiedModelColors();
+            if (colours != null) {
+                for (short c : colours) {
+                    for (short col : COLOURS) {
+                        if (c == col) return true;
+                    }
+                }
+            }
+            return false;
+        });
+    }
+}
 
 public final class MiningSection extends TutorialSection {
 
@@ -130,32 +157,5 @@ public final class MiningSection extends TutorialSection {
         if (closestRock != null && closestRock.interact("Mine")) {
             Sleep.sleepUntil(this::pendingContinue, 6000, 600);
         }
-    }
-}
-
-enum Rock {
-
-    COPPER((short) 4645, (short) 4510),
-    TIN((short) 53);
-
-    private final short[] COLOURS;
-
-    Rock(final short... COLOURS) {
-        this.COLOURS = COLOURS;
-    }
-
-    public RS2Object getClosestWithOre(final MethodProvider S) {
-        //noinspection unchecked
-        return S.getObjects().closest(obj -> {
-            short[] colours = obj.getDefinition().getModifiedModelColors();
-            if (colours != null) {
-                for (short c : colours) {
-                    for (short col : COLOURS) {
-                        if (c == col) return true;
-                    }
-                }
-            }
-            return false;
-        });
     }
 }

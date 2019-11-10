@@ -1,10 +1,13 @@
 package sections;
 
 import org.osbot.rs07.api.map.Position;
-import org.osbot.rs07.api.model.*;
+import org.osbot.rs07.api.model.Entity;
+import org.osbot.rs07.api.model.GroundDecoration;
+import org.osbot.rs07.api.model.NPC;
+import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.api.ui.Tab;
 import org.osbot.rs07.event.WalkingEvent;
-import utils.Sleep;
+import util.Sleep;
 
 import java.util.Arrays;
 import java.util.Comparator;
